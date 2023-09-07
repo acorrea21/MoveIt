@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MoveIt</string>
+    <string name="app_about">Juego de reacciones creado por Alexander Correa</string>
 </resources>
