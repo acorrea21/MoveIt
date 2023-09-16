@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/yellow"
     tools:context=".SplashScreenActivity">
 
     <TextView
-        android:id="@+id/SplashAppName"
+        android:id="@+id/splashAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -32,7 +33,7 @@
         app:layout_constraintGuide_begin="680dp" />
 
     <TextView
-        android:id="@+id/SplashMadeBy"
+        android:id="@+id/splashMadeBy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_madeBy"
@@ -40,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SplashAppName"
+        app:layout_constraintTop_toBottomOf="@+id/splashAppName"
         app:layout_constraintVertical_bias="0.97" />
 
     <ImageView
@@ -48,12 +49,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:tintMode="multiply"
-        app:layout_constraintBottom_toTopOf="@+id/SplashMadeBy"
+        app:layout_constraintBottom_toTopOf="@+id/splashMadeBy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SplashAppName"
+        app:layout_constraintTop_toBottomOf="@+id/splashAppName"
         app:layout_constraintVertical_bias="0.07"
         app:srcCompat="@drawable/moveitlogo"
-        app:tint="@color/yellow_little_dark" />
+        app:tint="@color/black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

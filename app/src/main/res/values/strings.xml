@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">Move It!</string>
     <string name="app_madeBy">Hecho por Alexander Correa</string>
-    <string name="app_about">Juego de reacciones creado por Alexander Correa</string>
+    <string name="app_about">Juego de reacciones creado por Alexander Correa
+        \nacorrea21@alumnos.utalca.cl
+    </string>
+    <string name="t_name">Nombre</string>
+    <string name="t_introquestion">Reproducir intro</string>
+
+
+    <string name="SharedPref">data</string>
+
+    <string name="p_intro">p_intro</string>
+    <string name="p_name">p_name</string>
+
 </resources>
