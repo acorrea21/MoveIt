@@ -11,6 +11,10 @@
     <string name="SharedPref">data</string>
 
     <string name="p_intro">p_intro</string>
-    <string name="p_name">p_name</string>
+    <string name="p_name">p_e</string>
+
+
+    <string name="g_intro">¡Espera a que apareza una accion y hacela!</string>
+
 
 </resources>
