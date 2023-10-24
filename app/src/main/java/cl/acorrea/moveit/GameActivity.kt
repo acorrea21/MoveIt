@@ -36,9 +36,9 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
 
         actionShow = findViewById<TextView>(R.id.GameActionText)
         actionCountdownText = findViewById<TextView>(R.id.GameCountdownTime)
-        backMusic = MediaPlayer()
-        winSound = MediaPlayer()
-        loseSound = MediaPlayer()
+        backMusic = MediaPlayer.create(this,R.raw.background)
+        winSound = MediaPlayer.create(this,R.raw.win)
+        loseSound = MediaPlayer.create(this,R.raw.fail)
 
         giveTimer = Timer(this, GIVE_TIMER)
         actionTimer = Timer(this, ACTION_TIMER)
@@ -52,16 +52,23 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
     override fun onPause() {
         super.onPause()
         backMusic?.pause()
-        winSound?.pause()
-        loseSound?.pause()
+        winSound?.stop()
+        loseSound?.stop()
     }
 
     override fun onResume() {
         super.onResume()
         //TODO("ASK WHEN RESUME")
         backMusic?.start()
-        winSound?.start()
-        loseSound?.start()
+        //winSound?.start()
+        //loseSound?.start()
+    }
+
+    override fun finish() {
+        backMusic?.release()
+        winSound?.release()
+        loseSound?.release()
+        super.finish()
     }
 
     private fun GiveAction()
