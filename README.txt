@@ -1,6 +1,13 @@
-Move it es un juego ideado para traer la experencia de Bop It hacia la comidad de un dispositivo movil,
-tratando de añadir/usar las caracteristicas unicas de un dispositivo (tactil, acelerometro,huella,etc).
+MoveIt es un proyecto creado por Alexander Correa para el curso de Programacion de Dispositivos Moviles.
 
-Link Repositorio en Github: https://github.com/acorrea21/MoveIt.git
+Inventoried es una aplicacion creada para simular la jugabilidad del juego BopIt, esto utilizando caracteristicas propias de de un dispositivo movil, como tacto, acelerometro, sensores de luz, etc.
 
-Link Apk debug: https://drive.google.com/file/d/1vt6W54XTQfE1reyyvMixjxw9Nf4Pt70p/view?usp=sharing
+VERSION DEL PROYECTO: 0.2
+
+ULTIMA ACTUALIZACION: Añadidos sonidos, musica de fondo, y deteccion de gestos. Ademas de la creacion de un game loop basico.
+
+LINK DE PRESENTACION: (No realizado por limitaciones)
+
+ESTADO DEL PROYECTO: MAQUETADO
+
+LINK DE DESCARGA DEL APK: https://drive.google.com/file/d/1dkMXrFx-Bbe714fLQNZIf7uA8eJh8fZh/view?usp=sharing
