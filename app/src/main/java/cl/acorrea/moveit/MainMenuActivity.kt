@@ -33,8 +33,8 @@ class MainMenuActivity : AppCompatActivity()
             startActivity(intentPref)
         }
 
-        var test = findViewById<ImageView>(R.id.mainPreferenceClickeable)
-        test.setOnClickListener{
+        var gameButton = findViewById<ImageView>(R.id.mainPreferenceClickeable)
+        gameButton.setOnClickListener{
             val intentPref = Intent(this, GameActivity::class.java)
             startActivity(intentPref)
         }

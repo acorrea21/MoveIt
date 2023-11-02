@@ -1,9 +1,15 @@
 package cl.acorrea.moveit
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.BoringLayout
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.TextView
@@ -14,87 +20,132 @@ import cl.acorrea.moveit.Object.Utilities
 import cl.acorrea.moveit.entities.Timer
 
 class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
-    , GestureDetector.OnDoubleTapListener, TimerCallback{
+    , GestureDetector.OnDoubleTapListener, TimerCallback, SensorEventListener {
 
     private val GIVE_TIMER = "give"
     private val ACTION_TIMER = "action"
+    private val HIGHSCORE_ID = "highscore"
 
     private lateinit var gestureDetector: GestureDetectorCompat
+    private lateinit var sensorManager: SensorManager
+    private lateinit var acelerometer: Sensor
+    private lateinit var sharedPreferences: SharedPreferences
+
+
     private lateinit var actionShow: TextView
     private lateinit var actionCountdownText: TextView
+    private lateinit var scoreText: TextView
+    private lateinit var highscoreText: TextView
     private lateinit var backMusic: MediaPlayer
     private lateinit var winSound: MediaPlayer
     private lateinit var loseSound: MediaPlayer
+
     private var gameStart: Boolean = false
     private var lose: Boolean = false
     private lateinit var movementToDo: Movements
     private lateinit var giveTimer: Timer
     private lateinit var actionTimer: Timer
+    private var milisecondsGame: Int = 0
+    private var highscore: Int = 0
+    private var score: Int = 0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
         actionShow = findViewById<TextView>(R.id.GameActionText)
         actionCountdownText = findViewById<TextView>(R.id.GameCountdownTime)
-        backMusic = MediaPlayer.create(this,R.raw.background)
-        winSound = MediaPlayer.create(this,R.raw.win)
-        loseSound = MediaPlayer.create(this,R.raw.fail)
+        scoreText = findViewById<TextView>(R.id.gameActualScoreView)
+        highscoreText = findViewById<TextView>(R.id.gameHighscoreView)
+        backMusic = MediaPlayer.create(this, R.raw.background)
+        winSound = MediaPlayer.create(this, R.raw.win)
+        loseSound = MediaPlayer.create(this, R.raw.fail)
 
         giveTimer = Timer(this, GIVE_TIMER)
         actionTimer = Timer(this, ACTION_TIMER)
 
-        gestureDetector = GestureDetectorCompat(this,this)
+        gestureDetector = GestureDetectorCompat(this, this)
         gestureDetector.setOnDoubleTapListener(this)
+
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        acelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensorManager.registerListener(this, acelerometer, SensorManager.SENSOR_DELAY_GAME)
+
+        milisecondsGame = 5000
+
+        sharedPreferences = getSharedPreferences(getString(R.string.SharedPref), MODE_PRIVATE)
+
+        highscore = sharedPreferences.getInt(HIGHSCORE_ID, 0)
+
+        SetScores()
 
         giveTimer.Start(5000)
     }
 
     override fun onPause() {
         super.onPause()
+
         backMusic?.pause()
         winSound?.stop()
         loseSound?.stop()
+        sensorManager.unregisterListener(this)
     }
 
     override fun onResume() {
         super.onResume()
         //TODO("ASK WHEN RESUME")
         backMusic?.start()
+
+        sensorManager.registerListener(this, acelerometer, SensorManager.SENSOR_DELAY_GAME)
+
         //winSound?.start()
         //loseSound?.start()
     }
 
-    override fun finish() {
-        backMusic?.release()
-        winSound?.release()
-        loseSound?.release()
-        super.finish()
-    }
-
-    private fun GiveAction()
-    {
+    private fun GiveAction() {
         movementToDo = Utilities.GetRandomMovement()
         actionShow.text = Utilities.MovementToString(movementToDo)
         //TODO("VARIABLE TIME")
+        milisecondsGame = (milisecondsGame * 0.9f).toInt()
         actionTimer.Start(5000)
     }
 
-    private fun ProcessMove(movement: Movements)
-    {
+    private fun ProcessMove(movement: Movements) {
         //Si todavia no iniciamos, o perdimos, no procesamos nada
-        if(!gameStart || lose)
-        {
+        if (!gameStart || lose || giveTimer.IsRunning()) {
             return
         }
 
-        if (movement == movementToDo)
-        {
+        if (movement == movementToDo) {
             //TODO("WIN AND RE PLAY, grown miliseconds")
+            score++;
+            SetScores()
             actionShow.text = "¡+1 Punto!"
             actionTimer.Stop()
             winSound.start()
             giveTimer.Start(1000)
         }
+    }
+
+    fun SetScores()
+    {
+        if(score > highscore)
+        {
+            highscore = score
+        }
+
+        //TODO(XML)
+        highscoreText.text = "Puntaje maximo: " + highscore.toString()
+        scoreText.text = "Puntaje: " + score.toString()
+
+    }
+
+    fun SaveScores()
+    {
+        val Editor = sharedPreferences.edit()
+        Editor.putInt(HIGHSCORE_ID,highscore)
+        Editor.apply()
     }
 
     override fun onTimerFinished(timer: Timer)
@@ -110,6 +161,7 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
         if(timer.id == ACTION_TIMER)
         {
             //TODO("LOSE, and lose string.xml")
+            SaveScores()
             actionShow.text = "Perdiste"
             lose = true;
             loseSound.start()
@@ -214,5 +266,27 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
     override fun onDoubleTapEvent(p0: MotionEvent): Boolean {
         //TODO("Not yet implemented")
         return true
+    }
+
+    override fun onSensorChanged(event: SensorEvent)
+    {
+        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+
+            val acceleration = Math.sqrt(x * x + y * y + z * z.toDouble()).toFloat()
+
+            val threshold = 50.0f
+
+            if (acceleration > threshold)
+            {
+                ProcessMove(Movements.Shake)
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+
     }
 }

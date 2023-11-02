@@ -6,5 +6,6 @@ enum class Movements
     FlingUP,
     FlingDOWN,
     FlingRIGHT,
-    FlingLEFT
+    FlingLEFT,
+    Shake
 }

@@ -23,6 +23,7 @@ object Utilities
             Movements.FlingDOWN -> "¡Hacia abajo!"
             Movements.FlingLEFT -> "¡Hacia la izquierda!"
             Movements.FlingRIGHT -> "¡Hacia la derecha!"
+            Movements.Shake -> "¡Agita el celular!"
         }
     }
 }
