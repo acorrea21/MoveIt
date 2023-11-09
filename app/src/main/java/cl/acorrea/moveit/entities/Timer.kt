@@ -3,7 +3,7 @@ package cl.acorrea.moveit.entities
 import android.os.CountDownTimer
 import cl.acorrea.moveit.Interface.TimerCallback
 
-class Timer(private val callback: TimerCallback, val id: String = "NOID")
+class Timer(private val callback: TimerCallback,val intervalTickMiliseconds: Long = 1000, val id: String = "NOID")
 {
     private var timer: CountDownTimer? = null
     private var milliseconds: Long = 0
@@ -41,7 +41,7 @@ class Timer(private val callback: TimerCallback, val id: String = "NOID")
     {
         elapsedMilliseconds = 0
         millisToFinish = milliseconds
-        timer = object : CountDownTimer(milliseconds,1000)
+        timer = object : CountDownTimer(milliseconds,intervalTickMiliseconds)
         {
             override fun onTick(millisUntilFinish: Long) {
                 callback.onTimerTick(this@Timer)

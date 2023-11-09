@@ -18,19 +18,24 @@ import cl.acorrea.moveit.Interface.TimerCallback
 import cl.acorrea.moveit.Enum.Movements
 import cl.acorrea.moveit.Object.Utilities
 import cl.acorrea.moveit.entities.Timer
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
     , GestureDetector.OnDoubleTapListener, TimerCallback, SensorEventListener {
 
+    //TODO(TO STRING.XML)
     private val GIVE_TIMER = "give"
     private val ACTION_TIMER = "action"
     private val HIGHSCORE_ID = "highscore"
+    private val STARTACTIONTIMER = "action"
+
 
     private lateinit var gestureDetector: GestureDetectorCompat
     private lateinit var sensorManager: SensorManager
     private lateinit var acelerometer: Sensor
     private lateinit var sharedPreferences: SharedPreferences
-
+    private var timersFormat: DecimalFormat = DecimalFormat("#.#")
 
     private lateinit var actionShow: TextView
     private lateinit var actionCountdownText: TextView
@@ -61,9 +66,10 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
         backMusic = MediaPlayer.create(this, R.raw.background)
         winSound = MediaPlayer.create(this, R.raw.win)
         loseSound = MediaPlayer.create(this, R.raw.fail)
+        timersFormat.roundingMode = RoundingMode.DOWN
 
-        giveTimer = Timer(this, GIVE_TIMER)
-        actionTimer = Timer(this, ACTION_TIMER)
+        giveTimer = Timer(this,100, GIVE_TIMER)
+        actionTimer = Timer(this,100, ACTION_TIMER)
 
         gestureDetector = GestureDetectorCompat(this, this)
         gestureDetector.setOnDoubleTapListener(this)
@@ -72,10 +78,9 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
         acelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         sensorManager.registerListener(this, acelerometer, SensorManager.SENSOR_DELAY_GAME)
 
-        milisecondsGame = 5000
-
         sharedPreferences = getSharedPreferences(getString(R.string.SharedPref), MODE_PRIVATE)
 
+        milisecondsGame = sharedPreferences.getInt(ACTION_TIMER,5000)
         highscore = sharedPreferences.getInt(HIGHSCORE_ID, 0)
 
         SetScores()
@@ -163,6 +168,16 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
             //TODO("LOSE, and lose string.xml")
             SaveScores()
             actionShow.text = "Perdiste"
+
+            if(score == highscore)
+            {
+                actionCountdownText.text = "¡Tuviste un puntaje alto de " + highscore.toString() + "!"
+            }
+            else
+            {
+                actionCountdownText.text = "¡Tuviste un puntaje de " + highscore.toString() + "!"
+            }
+
             lose = true;
             loseSound.start()
         }
@@ -174,13 +189,16 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
         if(timer.id == ACTION_TIMER)
         {
             //actualizamos el texto
-            actionCountdownText.text = (timer.GetTimeToFinish()/1000).toString()
+            var t : Float = timer.GetTimeToFinish().toFloat()/1000f
+
+            actionCountdownText.text = timersFormat.format(t)
         }
 
         if(timer.id == GIVE_TIMER)
         {
             //actualizamos el texto
-            actionCountdownText.text = "NUEVA ACCION EN " + (timer.GetTimeToFinish()/1000).toString()
+            var t : Float = timer.GetTimeToFinish().toFloat()/1000f
+            actionCountdownText.text = "NUEVA ACCION EN " + timersFormat.format(t)
         }
         super.onTimerTick(timer)
     }

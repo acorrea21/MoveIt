@@ -29,7 +29,7 @@ class MainMenuActivity : AppCompatActivity()
         }
 
         preferencesButton.setOnClickListener{
-            val intentPref = Intent(this, PreferencesActivity::class.java)
+            val intentPref = Intent(this, SettingsActivity::class.java)
             startActivity(intentPref)
         }
 

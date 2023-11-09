@@ -1,0 +1,25 @@
+<resources>
+    <string-array name="initialActionTimer_entries">
+        <item>Facil</item>
+        <item>Medio</item>
+        <item>Dificil</item>
+    </string-array>
+
+    <string-array name="initialActionTimer_values">
+        <item>7000</item>
+        <item>5000</item>
+        <item>3000</item>
+    </string-array>
+
+    <string-array name="actionToDifficult_entries">
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="actionToDifficult_values">
+        <item>3</item>
+        <item>2</item>
+        <item>1</item>
+    </string-array>
+</resources>

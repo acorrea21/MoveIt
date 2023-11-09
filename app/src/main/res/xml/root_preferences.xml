@@ -1,0 +1,55 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/player_header">
+
+        <EditTextPreference
+            app:defaultValue="0"
+            app:enabled="false"
+            app:key="highscore"
+            app:title="@string/highscore_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="Default value"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/name_tittle"
+            app:key="playername" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/app_header">
+        <SwitchPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="false"
+            android:title="@string/intro_title"
+            app:key="intro" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/difficult_header">
+
+        <ListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:title="@string/difficult1_title"
+            app:entries="@array/initialActionTimer_entries"
+            app:entryValues="@array/initialActionTimer_values"
+            app:key="initalReactionTime" />
+        <ListPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="1"
+            android:title="@string/difficult2_title"
+            app:entries="@array/actionToDifficult_entries"
+            app:entryValues="@array/actionToDifficult_values"
+            app:key="actionToDifficult" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
