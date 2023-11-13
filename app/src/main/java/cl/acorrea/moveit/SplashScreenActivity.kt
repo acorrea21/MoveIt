@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import cl.acorrea.moveit.Object.Utilities
 
 class SplashScreenActivity : AppCompatActivity()
 {
@@ -13,9 +14,8 @@ class SplashScreenActivity : AppCompatActivity()
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        val pref = getSharedPreferences(getString(R.string.SharedPref), MODE_PRIVATE)
 
-        if(pref.getBoolean(getString(R.string.p_intro),true))
+        if(Utilities.GetPlayIntro(this))
         {
             SetAnimation()
         }

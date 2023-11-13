@@ -1,8 +1,6 @@
 package cl.acorrea.moveit
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -27,14 +25,10 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
     //TODO(TO STRING.XML)
     private val GIVE_TIMER = "give"
     private val ACTION_TIMER = "action"
-    private val HIGHSCORE_ID = "highscore"
-    private val STARTACTIONTIMER = "action"
-
 
     private lateinit var gestureDetector: GestureDetectorCompat
     private lateinit var sensorManager: SensorManager
     private lateinit var acelerometer: Sensor
-    private lateinit var sharedPreferences: SharedPreferences
     private var timersFormat: DecimalFormat = DecimalFormat("#.#")
 
     private lateinit var actionShow: TextView
@@ -50,7 +44,9 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
     private lateinit var movementToDo: Movements
     private lateinit var giveTimer: Timer
     private lateinit var actionTimer: Timer
-    private var milisecondsGame: Int = 0
+    private var millisecondsGame: Int = 0
+    private var diffValue: Int = 0
+    private var diffCount: Int = 0
     private var highscore: Int = 0
     private var score: Int = 0
 
@@ -67,7 +63,6 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
         winSound = MediaPlayer.create(this, R.raw.win)
         loseSound = MediaPlayer.create(this, R.raw.fail)
         timersFormat.roundingMode = RoundingMode.DOWN
-
         giveTimer = Timer(this,100, GIVE_TIMER)
         actionTimer = Timer(this,100, ACTION_TIMER)
 
@@ -78,11 +73,9 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
         acelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         sensorManager.registerListener(this, acelerometer, SensorManager.SENSOR_DELAY_GAME)
 
-        sharedPreferences = getSharedPreferences(getString(R.string.SharedPref), MODE_PRIVATE)
-
-        milisecondsGame = sharedPreferences.getInt(ACTION_TIMER,5000)
-        highscore = sharedPreferences.getInt(HIGHSCORE_ID, 0)
-
+        diffValue = Utilities.GetDiff(this)
+        millisecondsGame = Utilities.GetInitialReactionTime(this)
+        highscore = Utilities.GetHighscore(this)
         SetScores()
 
         giveTimer.Start(5000)
@@ -112,8 +105,7 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
         movementToDo = Utilities.GetRandomMovement()
         actionShow.text = Utilities.MovementToString(movementToDo)
         //TODO("VARIABLE TIME")
-        milisecondsGame = (milisecondsGame * 0.9f).toInt()
-        actionTimer.Start(5000)
+        actionTimer.Start(millisecondsGame.toLong())
     }
 
     private fun ProcessMove(movement: Movements) {
@@ -122,14 +114,42 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
             return
         }
 
-        if (movement == movementToDo) {
+        if (movement == movementToDo)
+        {
             //TODO("WIN AND RE PLAY, grown miliseconds")
+            //Scores
             score++;
             SetScores()
+
+            //Output and diff up
+            diffCount++
+            var giveTime = 1000
             actionShow.text = "¡+1 Punto!"
-            actionTimer.Stop()
+            //Dificultad
+            if(diffCount >= diffValue)
+            {
+                //speed up music
+                val params = backMusic.playbackParams
+                params.speed += 0.05f
+                backMusic.playbackParams = params
+
+                //up diff
+                millisecondsGame = (millisecondsGame * 0.9f).toInt()
+                diffCount = 0
+
+                //show diferent text and more time to read
+                actionShow.text = "¡+1 Punto, Aumentemos la difficultad!"
+                giveTime = 2000
+            }
+            if(winSound.isPlaying)
+            {
+                winSound.stop()
+            }
             winSound.start()
-            giveTimer.Start(1000)
+
+            //Timers
+            actionTimer.Stop()
+            giveTimer.Start(giveTime.toLong())
         }
     }
 
@@ -146,13 +166,6 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
 
     }
 
-    fun SaveScores()
-    {
-        val Editor = sharedPreferences.edit()
-        Editor.putInt(HIGHSCORE_ID,highscore)
-        Editor.apply()
-    }
-
     override fun onTimerFinished(timer: Timer)
     {
         //Temporizador para dar acciones al jugador
@@ -166,16 +179,16 @@ class GameActivity : AppCompatActivity(), GestureDetector.OnGestureListener
         if(timer.id == ACTION_TIMER)
         {
             //TODO("LOSE, and lose string.xml")
-            SaveScores()
+            Utilities.SetHighscore(this,highscore)
             actionShow.text = "Perdiste"
 
-            if(score == highscore)
+            if(score == highscore && highscore > 0)
             {
-                actionCountdownText.text = "¡Tuviste un puntaje alto de " + highscore.toString() + "!"
+                actionCountdownText.text = "¡" + Utilities.GetPlayername(this) + " tuviste un puntaje alto de " + highscore.toString() + "!"
             }
             else
             {
-                actionCountdownText.text = "¡Tuviste un puntaje de " + highscore.toString() + "!"
+                actionCountdownText.text = "¡" + Utilities.GetPlayername(this) + " tuviste un puntaje de " + highscore.toString() + "!"
             }
 
             lose = true;

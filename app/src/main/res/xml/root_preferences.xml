@@ -1,23 +1,26 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:enabled="true">
 
     <PreferenceCategory app:title="@string/player_header">
 
         <EditTextPreference
-            app:defaultValue="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:defaultValue="No hay puntaje"
             app:enabled="false"
             app:key="highscore"
             app:title="@string/highscore_title"
             app:useSimpleSummaryProvider="true" />
-
         <EditTextPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:defaultValue="Default value"
+            android:defaultValue="Jugador"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="@string/name_tittle"
-            app:key="playername" />
+            app:key="playername"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
@@ -25,7 +28,7 @@
         <SwitchPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:title="@string/intro_title"
             app:key="intro" />
     </PreferenceCategory>
@@ -37,7 +40,7 @@
         <ListPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:defaultValue="1"
+            android:defaultValue="5000"
             android:title="@string/difficult1_title"
             app:entries="@array/initialActionTimer_entries"
             app:entryValues="@array/initialActionTimer_values"
@@ -45,7 +48,7 @@
         <ListPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:defaultValue="1"
+            android:defaultValue="2"
             android:title="@string/difficult2_title"
             app:entries="@array/actionToDifficult_entries"
             app:entryValues="@array/actionToDifficult_values"
