@@ -5,15 +5,15 @@ MoveIt es un proyecto creado por Alexander Correa para el curso de Programacion 
 
 Inventoried es una aplicacion creada para simular la jugabilidad del juego BopIt, esto utilizando caracteristicas propias de de un dispositivo movil, como tacto, acelerometro, sensores de luz, etc.
 
-VERSION DEL PROYECTO: 0.30
+VERSION DEL PROYECTO: 0.32
 
-ULTIMA ACTUALIZACION: Añadidos deteccion de acelerometro. Añadida nueva accion "Agitar". Ahora se muestra puntaje, y puntaje maximo (Este ultimo es persistente)
+ULTIMA ACTUALIZACION: Añadidos aceleracion de la musica de fondo. Añadida seccion para manejar los ajustes. Añaadida seccion de nombre del jugador, seleccion de dificultad, y eleccion del splash screen
 
-LINK DE PRESENTACION: [https://youtu.be/WGG1M0dxNeg](https://youtu.be/WGG1M0dxNeg)
+LINK DE PRESENTACION: [Link a la presentacion del prototipo](https://youtu.be/R0hfM7O6cr8)
 
-ESTADO DEL PROYECTO: PROTOTIPO (solo version single player)
+ESTADO DEL PROYECTO: PROTOTIPO SINGLEPLAYER
 
-LINK DE DESCARGA DEL APK (0.3): [https://drive.google.com/file/d/1dkMXrFx-Bbe714fLQNZIf7uA8eJh8fZh/view?usp=sharing](https://drive.google.com/file/d/1uDGzwBpGW4OqqtpKV3da4XCkUCqUyr6B/view?usp=sharing)
+LINK DE DESCARGA DEL APK (0.32): [Link al google drive](https://drive.google.com/file/d/1C2Yitl1IQ8Z2LoU1ekScbLa37EbTabK3/view?usp=sharing)
 
 
 --DOCUMENTACION EXTRA--
